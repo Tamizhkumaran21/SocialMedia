@@ -59,6 +59,11 @@ const login = async (req, res)=>{
             await Token.deleteMany({userId: user._id});
         }
 
+        if (!refreshtoken) {
+            console.log("Error: Token is null before saving.");
+            return res.status(400).json({ message: "Error: Token is null" });
+        }
+
         await Token.create({token : refreshtoken, userId: user._id});
 
         res.cookie("accesstoken", accesstoken, {httpOnly: true, secure : true});
